@@ -1,4 +1,5 @@
 package com.unimag.Tienda.Entidad;
+
 import jakarta.persistence.*;
 import  lombok.*;
 
@@ -6,23 +7,23 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
-@Table(name = "Products" )
+@Table(name = "productos" )
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
-@Builder
+
 
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String NameProduct;
-    private BigDecimal price;
-    private  int Stock;
+    private String nombreProducto;
+    private BigDecimal precio;
+    private  int stock;
 
-    @ManyToMany(mappedBy = "productos")
-    private List<ItemPedido>itemPedidos;
+   @OneToMany(mappedBy = "producto")
+   private List<ItemPedido> itemPedidos;
 
 
 

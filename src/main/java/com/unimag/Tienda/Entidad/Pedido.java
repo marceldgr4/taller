@@ -1,33 +1,43 @@
 package com.unimag.Tienda.Entidad;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import  java.time.LocalDateTime;
-import  java.time.LocalTime;
+
+import java.util.ArrayList;
 import  java.util.List;
 
 
 @Entity
-@Table(name = "Pedido")
-@Data
-@NoArgsConstructor
+@Table(name = "pedidos")
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@Setter
+@Getter
+
 
 public class Pedido {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "id_Cliente",referencedColumnName = "id",nullable = false)
-    private Cliente cliente;
-    @OneToMany(mappedBy = "Pedido",cascade = CascadeType.ALL)
-    private List<ItemPedido> itemPedidos;
 
-    private LocalDateTime fecha_Pedido;
-    private  String status;
+    @ManyToOne
+    @JoinColumn(name = "idCliente")
+    private Cliente cliente;
+
+    @OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL)
+    private List<ItemPedido> itemPedidos = new ArrayList<>();
+
+    @OneToOne(mappedBy = "pedido",cascade = CascadeType.ALL)
+    private Pago pago;
+
+    @OneToOne(mappedBy = "pedido",cascade = CascadeType.ALL)
+    private DetalleEnvio detalleEnvio;
+
+
+    private LocalDateTime fechaPedido;
+
+    @Enumerated(EnumType.STRING)
+    private  EstadoPedido status;
 }

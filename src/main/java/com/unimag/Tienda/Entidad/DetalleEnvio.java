@@ -13,12 +13,14 @@ public class DetalleEnvio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne
-    @JoinColumn(name = "id_pedido", referencedColumnName = "id",unique = true, nullable = false)
+    @JoinColumn(name = "idPedido")
     private Pedido pedido;
 
-    private String Direccion;
-    private String Transporte;
-    private  String Numero_Guia;
+    private String direccion;
+    private String Transportadora;
+    private String NumeroGuia;
+
 
 }

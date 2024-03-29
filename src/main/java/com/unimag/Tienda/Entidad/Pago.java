@@ -17,12 +17,13 @@ public class Pago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "id_Pedido" ,referencedColumnName = "id",nullable = false)
+
+    @OneToOne
+    @JoinColumn(name = "idPedido")
     private Pedido pedido;
 
-    private BigDecimal total_Pago;
-    private  LocalDateTime fecha_Pago;
-    @Enumerated(EnumType.STRING)
-    private MetodoPago Metodo_Pago;
+    private double TotalPago;
+    private LocalDateTime fechaPago;
+    private MetodoPago metodoPago;
+
 }

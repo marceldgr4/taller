@@ -6,7 +6,7 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "itemPedido")
+@Table(name = "itemPedidos")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,16 +18,15 @@ public class ItemPedido {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name ="idPedido", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "idPedido")
     private Pedido pedido;
 
     @ManyToOne
-    @JoinColumn(name = "idProducto", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "idProducto")
     private Producto producto;
 
-
-    private int Cantidad;
-    private BigDecimal PrecioUnidad;
+    private int cantidad;
+    private  double precioUnitario;
 
 
 }
