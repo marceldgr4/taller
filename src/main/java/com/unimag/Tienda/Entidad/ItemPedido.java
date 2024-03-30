@@ -25,8 +25,9 @@ public class ItemPedido {
     @JoinColumn(name = "idProducto")
     private Producto producto;
 
-    private int cantidad;
-    private  double precioUnitario;
+    private Integer cantidad;
+    private  Double precioUnitario;
+    private  Double total;
 
 
 }

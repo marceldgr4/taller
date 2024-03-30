@@ -19,8 +19,9 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombreProducto;
-    private BigDecimal precio;
-    private  int stock;
+    private Double precio;
+    private  Integer stock;
+
 
    @OneToMany(mappedBy = "producto")
    private List<ItemPedido> itemPedidos;
