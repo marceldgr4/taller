@@ -10,7 +10,7 @@ public class ItemPedidoDto {
     private Long id;
     private  Long idProducto;
     private Integer cantidad;
-    private double precioUnitario;
-    private  double total;
+    private Double precioUnitario;
+    private  Double total;
 
 }

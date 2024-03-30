@@ -11,6 +11,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -30,12 +32,12 @@ public class ProductoIntegrationTest {
     Producto producto = new Producto();
     producto.setNombreProducto("producto de prueba");
     producto.setPrecio(10.0);
-    producto.getStock(100);
+    producto.setStock(100);
     Producto productoGuardado = productoRepository.save(producto);
 
     assertNotNull(productoGuardado.getId());
     assertEquals("Producto de prueba", productoGuardado.getNombreProducto());
-    assertEquals(10.0, productoGuardado.getPrecio());
-    assertEquals(100, productoGuardado.getStock());
+    assertEquals(Optional.of(10.0), productoGuardado.getPrecio());
+    assertEquals(Optional.of(100), productoGuardado.getStock());
 }
 }

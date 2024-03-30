@@ -14,10 +14,11 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @DataJpaTest
 @Testcontainers
@@ -46,9 +47,44 @@ public class PagoIntegrationTest {
         pago.setMetodoPago(MetodoPago.PSE);
 
         Pago pagoGuardado = pagoRepository.save(pago);
+        List<Pago> pagoList =pagoRepository.findAll();
+
         assertNotNull(pagoGuardado.getId());
         assertEquals(pedido.getId(),pagoGuardado.getPedido().getId());
         assertEquals(Optional.of(50.0),pagoGuardado.getTotalPago());
         assertEquals(MetodoPago.PSE,pagoGuardado.getMetodoPago());
+    }
+    @Test
+    public void testActlizarPago(){
+        Pago pago =new Pago();
+        pago.setTotalPago(50.0);
+        pago.setFechaPago(LocalDateTime.now());
+        pago.setMetodoPago(MetodoPago.PSE);
+
+        pago = pagoRepository.save(pago);
+        pago.setTotalPago(60.0);
+        pagoRepository.save(pago);
+
+        Pago pagoActulizado= pagoRepository.findById(pago.getId()).orElse(null);
+        assertEquals(Optional.of(60.0),pagoActulizado.getTotalPago());
+    }
+    @Test
+    public void testEliminarPago(){
+        Pago pago =new Pago();
+        pago.setTotalPago(50.0);
+        pago.setFechaPago(LocalDateTime.now());
+        pago.setMetodoPago(MetodoPago.PSE);
+        pago =pagoRepository.save(pago);
+
+        pagoRepository.delete(pago);
+        assertTrue(pagoRepository.findById(pago.getId()).isEmpty());
+    }
+    @Test
+    public void testBuscarPago(){
+
+
+        List<Pago> pagosEncontrado =pagoRepository.findAll();
+        assertTrue(pagosEncontrado.isEmpty());
+
     }
 }

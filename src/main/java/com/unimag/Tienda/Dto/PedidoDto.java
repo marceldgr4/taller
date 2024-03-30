@@ -12,8 +12,8 @@ import java.util.List;
 
 public class PedidoDto {
     private Long id;
-    private  Long idCliente;
+    private Long idCliente;
     private LocalDateTime fechaPedido;
-    private  String status;
+    private String status;
     private List<ItemPedidoDto> itemPedidoDtos;
 }

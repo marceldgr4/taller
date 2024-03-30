@@ -9,6 +9,6 @@ public class DetalleEnvioDto {
     private Long id;
     private Long idPedido;
     private String direccion;
-    private  String transportadora;
+    private String transportadora;
     private String numeroGuia;
 }
