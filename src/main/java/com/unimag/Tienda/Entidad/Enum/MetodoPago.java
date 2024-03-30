@@ -1,4 +1,4 @@
-package com.unimag.Tienda.Entidad;
+package com.unimag.Tienda.Entidad.Enum;
 
 public enum MetodoPago {
     EFECTIVO,

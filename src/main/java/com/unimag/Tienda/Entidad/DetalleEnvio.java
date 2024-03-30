@@ -1,4 +1,5 @@
 package com.unimag.Tienda.Entidad;
+import com.unimag.Tienda.Entidad.Enum.EstadoPedido;
 import  jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,7 @@ public class DetalleEnvio {
     private String direccion;
     private String Transportadora;
     private String NumeroGuia;
+    private EstadoPedido estadoPedido;
 
 
 }
