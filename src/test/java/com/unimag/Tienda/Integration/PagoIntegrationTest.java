@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -46,9 +47,25 @@ public class PagoIntegrationTest {
         pago.setMetodoPago(MetodoPago.PSE);
 
         Pago pagoGuardado = pagoRepository.save(pago);
+        List<Pago> pagoList =pagoRepository.findAll();
+
         assertNotNull(pagoGuardado.getId());
         assertEquals(pedido.getId(),pagoGuardado.getPedido().getId());
         assertEquals(Optional.of(50.0),pagoGuardado.getTotalPago());
         assertEquals(MetodoPago.PSE,pagoGuardado.getMetodoPago());
+    }
+    @Test
+    public void testActlizarPago(){
+        Pago pago =new Pago();
+        pago.setTotalPago(50.0);
+        pago.setFechaPago(LocalDateTime.now());
+        pago.setMetodoPago(MetodoPago.PSE);
+
+        pago = pagoRepository.save(pago);
+        pago.setTotalPago(60.0);
+        pagoRepository.save(pago);
+
+        Pago pagoActulizado= pagoRepository.findById(pago.getId()).orElse(null);
+        assertEquals(Optional.of(60.0),pagoActulizado.getTotalPago());
     }
 }

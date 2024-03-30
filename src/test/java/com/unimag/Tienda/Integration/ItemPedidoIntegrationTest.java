@@ -142,8 +142,6 @@ static void setPostgreSQLContainer(DynamicPropertyRegistry registry){
 
     List<ItemPedido> itemPedidoEncontrados=itemPedidoRepository.findByidPedido(pedido.getId());
 
-
-
     }
 
 }
