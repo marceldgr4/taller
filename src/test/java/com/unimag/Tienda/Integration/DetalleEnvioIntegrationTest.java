@@ -1,5 +1,6 @@
 package com.unimag.Tienda.Integration;
 
+import com.unimag.Tienda.Entidad.Cliente;
 import com.unimag.Tienda.Entidad.DetalleEnvio;
 import com.unimag.Tienda.Entidad.Enum.EstadoPedido;
 import com.unimag.Tienda.Entidad.Pedido;
@@ -13,9 +14,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
+import static org.junit.Assert.*;
 
 @DataJpaTest
 @Testcontainers
@@ -48,7 +50,42 @@ public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContain
     assertEquals("Dirección de Envío", detalleEnvioGuardado.getDireccion());
     assertEquals("Servicio de Envío Express", detalleEnvioGuardado.getTransportadora());
     assertEquals("123456789", detalleEnvioGuardado.getNumeroGuia());
+    }
+    @Test
+    public void testBuscarDetalleEnvioPorId(){
+    Pedido pedido = new Pedido();
+
+    pedido.setFechaPedido(LocalDateTime.now());
+    pedido.setStatus(EstadoPedido.PENDIENTE);
+    pedidoRepository.save(pedido);
+
+    DetalleEnvio detalleEnvio = new DetalleEnvio();
+    detalleEnvio.setPedido(pedido);
+    detalleEnvio.setDireccion("direccion de envio");
+    detalleEnvio.setTransportadora("servicio de envio");
+    detalleEnvio.setNumeroGuia("123412");
+    detalleEnvioRepository.save(detalleEnvio);
+    Optional<DetalleEnvio>detalleEnvioEncotrado = detalleEnvioRepository.findByidPedido(pedido.getId());
+    assertTrue(detalleEnvioEncotrado.isPresent());
+    assertEquals(detalleEnvio.getId(),detalleEnvioEncotrado.get().getId());
+
+    }
+    @Test
+    public void testEliminarDetalleEnvio(){
+    Pedido pedido = new Pedido();
+    pedido.setFechaPedido(LocalDateTime.now());
+    pedido.setStatus(EstadoPedido.PENDIENTE);
+    pedidoRepository.save(pedido);
+
+    DetalleEnvio detalleEnvio =new DetalleEnvio();
+    detalleEnvio.setPedido(pedido);
+    detalleEnvio.setDireccion("direccion de envio");
+    detalleEnvio.setTransportadora("servicio de transportadora");
+    detalleEnvio.setNumeroGuia("numero de guia");
+    DetalleEnvio detalleEnvioGuardado= detalleEnvioRepository.save(detalleEnvio);
+    detalleEnvioRepository.delete(detalleEnvioGuardado);
+    assertFalse(detalleEnvioRepository.existsById(detalleEnvioGuardado.getId()));
 
 
-}
+    }
 }
