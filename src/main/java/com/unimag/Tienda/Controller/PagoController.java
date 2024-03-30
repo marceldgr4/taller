@@ -8,11 +8,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
+
 @RestController
 @RequestMapping("/pagos")
 public class PagoController {
+
     private final PagoService pagoService;
+
+    @Autowired
+    public PagoController(PagoService pagoService){
+        this.pagoService = pagoService;
+    }
 
     @PostMapping
     public Pago crearPago(@RequestBody Pago pago){

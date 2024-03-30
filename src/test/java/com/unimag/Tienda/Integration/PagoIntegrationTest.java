@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @DataJpaTest
 @Testcontainers
@@ -67,5 +67,24 @@ public class PagoIntegrationTest {
 
         Pago pagoActulizado= pagoRepository.findById(pago.getId()).orElse(null);
         assertEquals(Optional.of(60.0),pagoActulizado.getTotalPago());
+    }
+    @Test
+    public void testEliminarPago(){
+        Pago pago =new Pago();
+        pago.setTotalPago(50.0);
+        pago.setFechaPago(LocalDateTime.now());
+        pago.setMetodoPago(MetodoPago.PSE);
+        pago =pagoRepository.save(pago);
+
+        pagoRepository.delete(pago);
+        assertTrue(pagoRepository.findById(pago.getId()).isEmpty());
+    }
+    @Test
+    public void testBuscarPago(){
+
+
+        List<Pago> pagosEncontrado =pagoRepository.findAll();
+        assertTrue(pagosEncontrado.isEmpty());
+
     }
 }
