@@ -1,4 +1,4 @@
-package com.unimag.Tienda.repositoryTest;
+package com.unimag.Tienda.Unit.RepositoryTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.unimag.Tienda.Entidad.Cliente;
