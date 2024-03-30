@@ -8,8 +8,8 @@ import lombok.*;
 
 public class ClienteDto {
     private Long id;
-    private  String Nombre;
-    private  String Email;
+    private String Nombre;
+    private String Email;
     private String Direccion;
 
 
