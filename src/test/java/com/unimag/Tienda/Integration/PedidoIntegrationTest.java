@@ -93,28 +93,7 @@ public class PedidoIntegrationTest {
         assertNull(pedidoRepository.findById(pedido.getId()).orElse(null));
 
     }
-   /* @Test
-    public void testCrearPedido() {
 
-        Cliente cliente = new Cliente();
-        cliente.setNombre("Nombre del Cliente");
-        cliente.setEmail("cliente@example.com");
-        cliente.setDireccion("Dirección del Cliente");
-        clienteRepository.save(cliente);
-
-
-        Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
-        pedido.setFechaPedido(LocalDateTime.now());
-        pedido.setStatus(EstadoPedido.PENDIENTE);
-
-        Pedido pedidoGuardado = pedidoRepository.save(pedido);
-
-
-        assertNotNull(pedidoGuardado.getId());
-        assertEquals(cliente.getId(), pedidoGuardado.getCliente().getId());
-        assertEquals(EstadoPedido.PENDIENTE, pedidoGuardado.getStatus());
-    }*/
     @Test
     public void testModificarPedido() {
 

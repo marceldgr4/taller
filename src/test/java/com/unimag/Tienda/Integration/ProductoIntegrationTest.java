@@ -11,10 +11,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @DataJpaTest
 @Testcontainers
@@ -40,4 +40,48 @@ public class ProductoIntegrationTest {
     assertEquals(Optional.of(10.0), productoGuardado.getPrecio());
     assertEquals(Optional.of(100), productoGuardado.getStock());
 }
+    @Test
+    public void testActualizarProducto() {
+        Producto producto = new Producto();
+        producto.setNombreProducto("producto de prueba");
+        producto.setPrecio(10.0);
+        producto.setStock(100);
+        Producto productoGuardado = productoRepository.save(producto);
+
+        productoGuardado.setPrecio(15.0);
+        productoGuardado.setStock(150);
+        productoRepository.save(productoGuardado);
+
+        Producto productoActualizado = productoRepository.findById(productoGuardado.getId()).orElse(null);
+        assertNotNull(productoActualizado);
+        assertEquals(Optional.of(15.0), productoActualizado.getPrecio());
+        assertEquals(Optional.of(150), productoActualizado.getStock());
+    }
+
+    @Test
+    public void testEliminarProducto() {
+        Producto producto = new Producto();
+        producto.setNombreProducto("producto de prueba");
+        producto.setPrecio(10.0);
+        producto.setStock(100);
+        Producto productoGuardado = productoRepository.save(producto);
+
+        productoRepository.delete(productoGuardado);
+
+        Producto productoEliminado = productoRepository.findById(productoGuardado.getId()).orElse(null);
+        assertNull(productoEliminado);
+    }
+
+    @Test
+    public void testBuscarProductoPorNombre() {
+        Producto producto = new Producto();
+        producto.setNombreProducto("producto de prueba");
+        producto.setPrecio(10.0);
+        producto.setStock(100);
+        productoRepository.save(producto);
+
+        List<Producto> productosEncontrados = productoRepository.findByNombreContainingIgnoreCase("producto");
+        assertEquals(1, productosEncontrados.size());
+        assertEquals("producto de prueba", productosEncontrados.get(0).getNombreProducto());
+    }
 }

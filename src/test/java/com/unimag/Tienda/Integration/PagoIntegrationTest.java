@@ -82,7 +82,6 @@ public class PagoIntegrationTest {
     @Test
     public void testBuscarPago(){
 
-
         List<Pago> pagosEncontrado =pagoRepository.findAll();
         assertTrue(pagosEncontrado.isEmpty());
 
