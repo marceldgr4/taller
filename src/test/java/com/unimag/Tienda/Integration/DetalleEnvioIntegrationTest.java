@@ -54,7 +54,6 @@ public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContain
     @Test
     public void testBuscarDetalleEnvioPorId(){
     Pedido pedido = new Pedido();
-
     pedido.setFechaPedido(LocalDateTime.now());
     pedido.setStatus(EstadoPedido.PENDIENTE);
     pedidoRepository.save(pedido);
@@ -86,6 +85,30 @@ public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContain
     detalleEnvioRepository.delete(detalleEnvioGuardado);
     assertFalse(detalleEnvioRepository.existsById(detalleEnvioGuardado.getId()));
 
+    }
+    public void testActualizarDetalleEnvio() {
+        Pedido pedido = new Pedido();
+        pedido.setFechaPedido(LocalDateTime.now());
+        pedido.setStatus(EstadoPedido.PENDIENTE);
+        pedidoRepository.save(pedido);
+
+        DetalleEnvio detalleEnvio = new DetalleEnvio();
+        detalleEnvio.setPedido(pedido);
+        detalleEnvio.setDireccion("Dirección de Envío");
+        detalleEnvio.setTransportadora("Servicio de Envío Express");
+        detalleEnvio.setNumeroGuia("123456789");
+        detalleEnvioRepository.save(detalleEnvio);
+
+
+        detalleEnvio.setDireccion("Nueva Dirección");
+        detalleEnvio.setTransportadora("Nuevo Servicio de Envío");
+        detalleEnvio.setNumeroGuia("987654321");
+
+
+        DetalleEnvio detalleEnvioActualizado = detalleEnvioRepository.save(detalleEnvio);
+
 
     }
+
+
 }
