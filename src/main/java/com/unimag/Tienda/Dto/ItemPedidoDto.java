@@ -9,6 +9,7 @@ import lombok.Setter;
 public class ItemPedidoDto {
     private Long id;
     private  Long idProducto;
+    private Long idPedido;
     private Integer cantidad;
     private Double precioUnitario;
     private  Double total;

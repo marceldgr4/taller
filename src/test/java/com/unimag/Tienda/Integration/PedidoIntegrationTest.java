@@ -14,8 +14,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @DataJpaTest
 @Testcontainers
@@ -48,5 +47,74 @@ public class PedidoIntegrationTest {
         assertEquals(cliente.getId(),pedidoGuardado.getCliente().getId());
         assertEquals("PENDIENTE",pedidoGuardado.getStatus());
 
+    }
+    @Test
+    public void testActualizarPedido() {
+
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Nombre del Cliente");
+        cliente.setEmail("cliente@example.com");
+        cliente.setDireccion("Dirección del Cliente");
+        clienteRepository.save(cliente);
+
+
+        Pedido pedido = new Pedido();
+        pedido.setCliente(cliente);
+        pedido.setFechaPedido(LocalDateTime.now());
+        pedido.setStatus(EstadoPedido.PENDIENTE);
+        pedidoRepository.save(pedido);
+
+
+        pedido.setStatus(EstadoPedido.ENVIADO);
+        Pedido pedidoActualizado = pedidoRepository.save(pedido);
+
+        assertEquals(EstadoPedido.ENVIADO, pedidoActualizado.getStatus());
+    }
+    @Test
+    public void testEliminarPedido() {
+        // Crear un cliente
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Nombre del Cliente");
+        cliente.setEmail("cliente@example.com");
+        cliente.setDireccion("Dirección del Cliente");
+        clienteRepository.save(cliente);
+
+
+        Pedido pedido = new Pedido();
+        pedido.setCliente(cliente);
+        pedido.setFechaPedido(LocalDateTime.now());
+        pedido.setStatus(EstadoPedido.PENDIENTE);
+        pedidoRepository.save(pedido);
+
+
+        pedidoRepository.delete(pedido);
+
+
+        assertNull(pedidoRepository.findById(pedido.getId()).orElse(null));
+
+    }
+
+    @Test
+    public void testModificarPedido() {
+
+        Cliente cliente = new Cliente();
+        cliente.setNombre("Nombre del Cliente");
+        cliente.setEmail("cliente@example.com");
+        cliente.setDireccion("Dirección del Cliente");
+        clienteRepository.save(cliente);
+
+
+        Pedido pedido = new Pedido();
+        pedido.setCliente(cliente);
+        pedido.setFechaPedido(LocalDateTime.now());
+        pedido.setStatus(EstadoPedido.PENDIENTE);
+        pedidoRepository.save(pedido);
+
+
+        pedido.setStatus(EstadoPedido.ENVIADO);
+        Pedido pedidoActualizado = pedidoRepository.save(pedido);
+
+
+        assertEquals(EstadoPedido.ENVIADO, pedidoActualizado.getStatus());
     }
 }
