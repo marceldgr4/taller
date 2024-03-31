@@ -1,7 +1,7 @@
 package com.unimag.Tienda.Controller;
 
 import com.unimag.Tienda.Entidad.Producto;
-import com.unimag.Tienda.Service.PedidoServicio;
+import com.unimag.Tienda.Service.PedidoService;
 import com.unimag.Tienda.Service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

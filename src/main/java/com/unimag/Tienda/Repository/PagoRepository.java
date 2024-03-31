@@ -1,5 +1,6 @@
 package com.unimag.Tienda.Repository;
 
+import com.unimag.Tienda.Entidad.Enum.MetodoPago;
 import com.unimag.Tienda.Entidad.Pago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,6 @@ public interface PagoRepository extends JpaRepository<Pago,Long> {
     List<Pago> findByFechaPagoBetween(@Param("startDate")LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
     //Recuperar pagos por un identificador de una orden y método de pago:
-    List<Pago> findByPedidoIdAndMetodoPago(Long idPedido, String metodoPago);
+    List<Pago> findByPedidoIdAndMetodoPago(Long idPedido, MetodoPago metodoPago);
 
 }
