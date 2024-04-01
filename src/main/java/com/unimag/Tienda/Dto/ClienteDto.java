@@ -11,6 +11,7 @@ public class ClienteDto {
     private String Nombre;
     private String Email;
     private String Direccion;
+    private String CityName;
 
 
 }

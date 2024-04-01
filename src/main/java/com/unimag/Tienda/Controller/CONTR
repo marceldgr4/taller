@@ -1,0 +1,62 @@
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/order-items")
+public class ItemPedidoController {
+
+    private final ItemPedidoService itemPedidoService;
+
+    @Autowired
+    public ItemPedidoController(ItemPedidoService itemPedidoService) {
+        this.itemPedidoService = itemPedidoService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ItemPedidoDTO> getItemPedidoById(@PathVariable Long id) {
+        ItemPedidoDTO itemPedidoDTO = itemPedidoService.getItemPedidoById(id);
+        return ResponseEntity.ok(itemPedidoDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ItemPedidoDTO>> getAllItems() {
+        List<ItemPedidoDTO> itemPedidos = itemPedidoService.getAllItemPedidos();
+        return ResponseEntity.ok(itemPedidos);
+    }
+
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<List<ItemPedidoDTO>> getItemsByOrderId(@PathVariable Long orderId) {
+        List<ItemPedidoDTO> itemPedidos = itemPedidoService.getItemsByOrderId(orderId);
+        return ResponseEntity.ok(itemPedidos);
+    }
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<ItemPedidoDTO>> getItemsByProductId(@PathVariable Long productId) {
+        List<ItemPedidoDTO> itemPedidos = itemPedidoService.getItemsByProductId(productId);
+        return ResponseEntity.ok(itemPedidos);
+    }
+
+    @PostMapping
+    public ResponseEntity<ItemPedidoDTO> createItemPedido(@RequestBody ItemPedidoDTO itemPedidoDTO) {
+        ItemPedidoDTO createdItemPedido = itemPedidoService.createItemPedido(itemPedidoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdItemPedido);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemPedidoDTO> updateItemPedido(@PathVariable Long id, @RequestBody ItemPedidoDTO itemPedidoDTO) {
+        ItemPedidoDTO updatedItemPedido = itemPedidoService.updateItemPedido(id, itemPedidoDTO);
+        return ResponseEntity.ok(updatedItemPedido);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItemPedido(@PathVariable Long id) {
+        itemPedidoService.deleteItemPedido(id);
+        return ResponseEntity.noContent().build();
+    }
+}
+
+udate

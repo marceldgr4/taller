@@ -1,6 +1,8 @@
 package com.unimag.Tienda.Controller;
 
+import com.unimag.Tienda.Dto.ClienteDto;
 import com.unimag.Tienda.Entidad.Cliente;
+import com.unimag.Tienda.Mapper.ClienteMapper;
 import com.unimag.Tienda.Service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,39 +12,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("/api/v1/customrs")
 
 public class ClienteController {
 @Autowired
     private ClienteService clienteService;
-    @PostMapping
-    public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente) {
-        Cliente clienteCreado = clienteService.CrearCliente(cliente);
-        return new ResponseEntity<>(clienteCreado, HttpStatus.CREATED);
+
+@Autowired
+private ClienteMapper clienteMapper;
+    @PostMapping("/api/v1/customers")
+    public ResponseEntity<ClienteDto> crearCliente(@RequestBody ClienteDto clienteDto) {
+        Cliente NuevoCliente = clienteMapper.clienteDtoToCliente(clienteDto);
+        ClienteDto NuevoClienteDto = clienteMapper.clienteToClienteDto(clienteService.CrearCliente(NuevoCliente));
+        return new ResponseEntity<>(NuevoClienteDto,HttpStatus.CREATED);
+
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Cliente> obtenerClientePorId(@PathVariable Long id) {
-        Cliente cliente = clienteService.ObtenerClientePorID(id);
-        return ResponseEntity.ok(cliente);
+    @GetMapping("/api/v1/customers{id}")
+    public ResponseEntity<ClienteDto> obtenerClientePorId(@PathVariable Long id) {
+        ClienteDto clienteDto = clienteMapper.clienteToClienteDto(clienteService.ObtenerClientePorID(id));
+        return ResponseEntity.ok(clienteDto);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Cliente> ActualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
-        Cliente clienteActualizado = clienteService.ActulizarCliente(id, cliente);
-        return ResponseEntity.ok(clienteActualizado);
+    @PutMapping("/api/v1/customers/{id}")
+    public ResponseEntity<ClienteDto> ActualizarCliente(@PathVariable Long id, @RequestBody ClienteDto clienteDto) {
+        Cliente cliente =clienteMapper.clienteDtoToCliente(clienteDto);
+        ClienteDto clienteActualizadoDto = clienteMapper.clienteToClienteDto(clienteService.ActulizarCliente(id,cliente));
+        return ResponseEntity.ok(clienteActualizadoDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/api/v1/customers/{id}")
     public ResponseEntity<Void> eliminarCliente(@PathVariable Long id) {
         clienteService.EliminarCliente(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/buscar/email")
-    public ResponseEntity<List<Cliente>> BuscarClientesPorEmail(@RequestParam String email) {
-        List<Cliente> clientesEncontrados = clienteService.BuscarPorEmail(email);
-        return ResponseEntity.ok(clientesEncontrados);
+    @GetMapping("/api/v1/customers/email/{email}")
+    public ResponseEntity<List<ClienteDto>> BuscarClientesPorEmail(@RequestParam String email) {
+        List<ClienteDto> clienteDto = clienteMapper.clienteToClientesDto(clienteService.BuscarPorEmail(email));
+        return ResponseEntity.ok(clienteDto);
     }
 
     @GetMapping("/buscar/direccion")
@@ -50,6 +58,12 @@ public class ClienteController {
         List<Cliente> clientesEncontrados = clienteService.BuscarPorDireccion(direccion);
         return ResponseEntity.ok(clientesEncontrados);
     }
+    @GetMapping("/api/v1/customrs/city/cityName=")
+    public ResponseEntity<List<ClienteDto>> ObtenerClientePorCiudad (@RequestParam("CityName")String CityName){
+        List<ClienteDto> clienteDto =clienteMapper.clientesToClientesDto(clienteService.ObtenerClientePorCiudad(CityName));
+        return ResponseEntity.ok(clienteDto);
+    }
+
 
     @GetMapping("/buscar/nombre")
     public ResponseEntity<List<Cliente>> BuscarClientesPorNombreQueEmpieceCon(@RequestParam String nombre) {
