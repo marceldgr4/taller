@@ -20,12 +20,12 @@ public class ProductoController {
     @PostMapping
     public ProductoDto GuardarProducto(@RequestBody Producto producto){
         ProductoDto productoDto = ProductoMapper.INSTANCE.productoToProductoDto(producto);
-        return productoService.GuardarProducto(new ProductoDto());
+        return productoService.CrearProducto(new ProductoDto());
     }
     // Obtener un producto por su ID (GET)
     @GetMapping("/{id}")
     public ProductoDto obtenerProductoPorId(@PathVariable Long id) {
-        return productoService.obtenerProductoPorId(id);
+        return productoService.ObtenerProductoPorId(id);
     }
 
     // Actualizar un producto existente (PUT)
@@ -37,7 +37,7 @@ public class ProductoController {
     // Eliminar un producto por su ID (DELETE)
     @DeleteMapping("/api/v1/products/{id}")
     public  void EliminarProducto(@PathVariable Long id){
-        productoService.EliminnarProducto(id);
+        productoService.EliminarProducto(id);
     }
     // Búsqueda de productos (GET)
     @GetMapping("/api/v1/products/search")
@@ -59,7 +59,7 @@ public class ProductoController {
     }
     // Crear un nuevo producto (POST)
     @PostMapping
-    public ProductoDto crearNuevoProducto(@RequestBody ProductoDto productoDto) {
-        return productoService.GuardarProducto(productoDto);
+    public ProductoDto CrearNuevoProducto(@RequestBody ProductoDto productoDto) {
+        return productoService.CrearProducto(productoDto);
     }
 }

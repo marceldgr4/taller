@@ -28,7 +28,7 @@ public class ProductoIntegrationTest {
             .withUsername("postgres")
             .withPassword("1234");
 @Test
-    public void testGuardarProducto(){
+    public void tesCrearProducto(){
     Producto producto = new Producto();
     producto.setNombreProducto("producto de prueba");
     producto.setPrecio(10.0);
@@ -39,6 +39,18 @@ public class ProductoIntegrationTest {
     assertEquals("Producto de prueba", productoGuardado.getNombreProducto());
     assertEquals(Optional.of(10.0), productoGuardado.getPrecio());
     assertEquals(Optional.of(100), productoGuardado.getStock());
+}
+@Test
+public void testLeerProductoPorID(){
+    Producto producto = new Producto();
+    producto.setNombreProducto("producto de prueba");
+    producto.setPrecio(10.0);
+    producto.setStock(100);
+    Producto productoGuardado = productoRepository.save(producto);
+    Optional<Producto>productoLeido =productoRepository.findById(productoGuardado.getId());
+
+    assertTrue(productoLeido.isPresent());
+    assertEquals(productoGuardado, productoLeido.get());
 }
     @Test
     public void testActualizarProducto() {

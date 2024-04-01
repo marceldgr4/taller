@@ -21,7 +21,9 @@ public class ProductoService {
         public ProductoService(ProductoRepository productoRepository){
         this.productoRepository =productoRepository;
     }
-    public ProductoDto GuardarProducto(ProductoDto productoDto){
+
+    //--------------crudo---------------------
+   public ProductoDto CrearProducto(ProductoDto productoDto){
         Producto producto = ProductoMapper.INSTANCE.ProductoDtoToProducto(productoDto);
         Producto ProductoGuardado = productoRepository.save(producto);
         return ProductoMapper.INSTANCE.productoToProductoDto(ProductoGuardado);
@@ -30,40 +32,10 @@ public class ProductoService {
         Producto ProductoActulizado =ProductoMapper.INSTANCE.ProductoDtoToProducto(productoDto);
         ProductoActulizado.setId(id);
         Producto ProductoGuardado= productoRepository.save(ProductoActulizado);
-        /*
-        Producto productoExistente = productoRepository.findById(id).orElseThrow(()-> new RuntimeException("producto no encontrado con ID:"+id));
-        productoExistente.setNombreProducto(ProductoActulizado.getNombreProducto());
-        productoExistente.setPrecio(ProductoActulizado.getPrecio());
-        productoExistente.setStock(ProductoActulizado.getStock());*/
-
         return ProductoMapper.INSTANCE.productoToProductoDto(ProductoGuardado);
     }
-    public  List<ProductoDto> BuscarProductoPorNombre(String term){
-        List<Producto> productos = productoRepository.findByNombreContainingIgnoreCase(term);
-        return productos.stream().map(ProductoMapper.INSTANCE::productoToProductoDto).collect(Collectors.toList());
-    }
-    public List<ProductoDto>BuscarProductoEnStock(){
-        List<Producto> productos = productoRepository.findByStockGreaterThan(0);
-        return productos.stream().map(ProductoMapper.INSTANCE::productoToProductoDto).collect(Collectors.toList());
 
-    }
-    public List<ProductoDto>BuscarProductoPorPrecioYStock(Double PrecioMaximo,Integer StockMaximo){
-       List<Producto> productos = productoRepository.findByPriceLessThanAndStockLessThanEqual(PrecioMaximo, StockMaximo);
-        return productos.stream().map(ProductoMapper.INSTANCE::productoToProductoDto).collect(Collectors.toList());
-    }
-    public  void EliminnarProducto(Long id){
-        Producto producto = productoRepository.findById(id).orElseThrow(()-> new RuntimeException("producto no encontrado con ID:"+id));
-        productoRepository.delete(producto);
-    }
-
-    public List<ProductoDto> obtenerProductosEnStock() {
-        List<Producto> productosEnStock = productoRepository.findByStockGreaterThan(0);
-        return productosEnStock.stream()
-                .map(ProductoMapper.INSTANCE::productoToProductoDto)
-                .collect(Collectors.toList());
-    }
-
-    public ProductoDto obtenerProductoPorId(Long id) {
+    public ProductoDto ObtenerProductoPorId(Long id) {
         Optional<Producto> productoOptional = productoRepository.findById(id);
         if (productoOptional.isEmpty()){
             Producto producto = productoOptional.get();
@@ -73,4 +45,37 @@ public class ProductoService {
         }
 
     }
+
+    public  void EliminarProducto(Long id){
+        Producto producto = productoRepository.findById(id).orElseThrow(()-> new RuntimeException("producto no encontrado con ID:"+id));
+        productoRepository.delete(producto);
+    }
+    //-------------------------------------------------
+    //---buscar productos según un término de búsqueda---
+    public  List<ProductoDto> BuscarProductoPorNombre(String term){
+        List<Producto> productos = productoRepository.findByNombreContainingIgnoreCase(term);
+        return productos.stream().map(ProductoMapper.INSTANCE::productoToProductoDto).collect(Collectors.toList());
+    }
+
+    //----Buscar los productos que están en stock.----
+    public List<ProductoDto>BuscarProductoEnStock(){
+        List<Producto> productos = productoRepository.findByStockGreaterThan(0);
+        return productos.stream().map(ProductoMapper.INSTANCE::productoToProductoDto).collect(Collectors.toList());
+
+    }
+    //----------Buscar los productos que no superen un precio y un stock determinado-----
+    public List<ProductoDto>BuscarProductoPorPrecioYStock(Double PrecioMaximo,Integer StockMaximo){
+       List<Producto> productos = productoRepository.findByPriceLessThanAndStockLessThanEqual(PrecioMaximo, StockMaximo);
+        return productos.stream().map(ProductoMapper.INSTANCE::productoToProductoDto).collect(Collectors.toList());
+    }
+
+
+    public List<ProductoDto> obtenerProductosEnStock() {
+        List<Producto> productosEnStock = productoRepository.findByStockGreaterThan(0);
+        return productosEnStock.stream()
+                .map(ProductoMapper.INSTANCE::productoToProductoDto)
+                .collect(Collectors.toList());
+    }
+
+
 }
