@@ -4,6 +4,7 @@ import com.unimag.Tienda.Dto.ItemPedidoDto;
 import com.unimag.Tienda.Entidad.ItemPedido;
 import com.unimag.Tienda.Entidad.Pedido;
 import com.unimag.Tienda.Entidad.Producto;
+import com.unimag.Tienda.Mapper.ItemPedidoMapper;
 import com.unimag.Tienda.Repository.ItemPedidoRepository;
 import com.unimag.Tienda.Repository.PedidoRepository;
 import com.unimag.Tienda.Repository.ProductoRepository;
@@ -20,11 +21,13 @@ public class ItemPedidoService {
     private ItemPedidoRepository itemPedidoRepository;
     private final PedidoRepository pedidoRepository;
     private  final ProductoRepository productoRepository;
+    private final ItemPedidoMapper itemPedidoMapper;
 
-    public ItemPedidoService(ItemPedidoRepository itemPedidoRepository,PedidoRepository pedidoRepository,ProductoRepository productoRepository) {
+    public ItemPedidoService(ItemPedidoRepository itemPedidoRepository,PedidoRepository pedidoRepository,ProductoRepository productoRepository,ItemPedidoMapper itemPedidoMapper) {
         this.itemPedidoRepository = itemPedidoRepository;
         this.pedidoRepository = pedidoRepository;
         this.productoRepository = productoRepository;
+        this.itemPedidoMapper =itemPedidoMapper;
     }
     public List<ItemPedido> buscarPorPedidoId(Long pedidoId) {
         return itemPedidoRepository.findByidPedido(pedidoId);
@@ -60,7 +63,6 @@ public class ItemPedidoService {
         itemPedido.setProducto(producto);
         itemPedido.setCantidad(itemPedidoDto.getCantidad());
         itemPedido.setPrecioUnitario(itemPedidoDto.getPrecioUnitario());
-
 
         return itemPedidoRepository.save(itemPedido);
     }

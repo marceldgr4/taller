@@ -21,6 +21,7 @@ public class Cliente {
     private  String Nombre;
     private  String Email;
     private  String Direccion;
+    private String CityName;
 
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
     private List<Pedido> pedidos =new ArrayList<>();

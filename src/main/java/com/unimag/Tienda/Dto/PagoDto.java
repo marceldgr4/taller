@@ -1,5 +1,4 @@
 package com.unimag.Tienda.Dto;
-import  lombok.*;
 
 import com.unimag.Tienda.Entidad.Enum.EstadoPago;
 import com.unimag.Tienda.Entidad.Enum.MetodoPago;
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 
-public class pagoDto {
+public class PagoDto {
     private Long id;
     private Long idPedido;
     private Double totalPago;
