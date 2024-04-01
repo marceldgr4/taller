@@ -16,7 +16,6 @@ ClienteMapper INSTANCE = Mappers.getMapper(ClienteMapper.class);
     Cliente clienteDtoToCliente(ClienteDto clienteDto);
    // List<ClienteDto> clientesToClientesDto(List<Cliente>clientes);
 
-
     List<ClienteDto> clientesToClientesDto(List<ClienteDto> clienteDtos);
 
     List<ClienteDto> clienteToClientesDto(List<Cliente> clientes);
