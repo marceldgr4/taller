@@ -1,7 +1,9 @@
 package com.unimag.Tienda.Service;
 
+import com.unimag.Tienda.Dto.PagoDto;
 import com.unimag.Tienda.Entidad.Enum.MetodoPago;
 import com.unimag.Tienda.Entidad.Pago;
+import com.unimag.Tienda.Mapper.PagoMapper;
 import com.unimag.Tienda.Repository.PagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +57,11 @@ public class PagoService {
         } else {
             return false;
         }
+    }
+
+    public PagoDto CrearPago(PagoDto pagoDto){
+        Pago pago = PagoMapper.INSTACE.pagoDtoToPag(pagoDto);
+        pago= pagoRepository.save(pago);
+        return PagoMapper.INSTACE.pagoToPagoDto(pago);
     }
 }
