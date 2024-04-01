@@ -38,7 +38,7 @@ public class ProductoService {
 
         return ProductoMapper.INSTANCE.productoToProductoDto(ProductoGuardado);
     }
-    public static List<ProductoDto> BuscarProductoPorNombre(String term){
+    public  List<ProductoDto> BuscarProductoPorNombre(String term){
         List<Producto> productos = productoRepository.findByNombreContainingIgnoreCase(term);
         return productos.stream().map(ProductoMapper.INSTANCE::productoToProductoDto).collect(Collectors.toList());
     }
