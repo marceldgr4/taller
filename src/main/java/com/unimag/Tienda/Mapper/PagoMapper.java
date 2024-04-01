@@ -7,13 +7,23 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Mapper
 public interface PagoMapper {
-    PagoMapper INSTACE = Mappers.getMapper(PagoMapper.class);
+    PagoMapper INSTANCE = Mappers.getMapper(PagoMapper.class);
 
     @Mapping(source = "fechaPago", target = "fechaPago")
+    @Mapping(source = "pedido.id",target = "pedido.id")
     PagoDto pagoToPagoDto(Pago pago);
 
     @Mapping(source = "fechaPago",target = "fechaPago")
-    Pago pagoDtoToPag(PagoDto pagoDto);
+    @Mapping(source = "idPedido",target = "idPedido")
+    Pago pagoDtoToPago(PagoDto pagoDto);
+
+
+   default List<PagoDto> pagosToPagoDtos(List<Pago>pagos){
+        return pagos.stream().map(this::pagoToPagoDto).collect(Collectors.toList());
+    }
 }

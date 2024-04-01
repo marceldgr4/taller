@@ -8,22 +8,30 @@ import com.unimag.Tienda.Repository.PagoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PagoService {
 
     private final PagoRepository pagoRepository;
+    private final PagoMapper pagoMapper;
     @Autowired
-    public PagoService(PagoRepository pagoRepository){
+    public PagoService(PagoRepository pagoRepository,PagoMapper pagoMapper){
         this.pagoRepository=pagoRepository;
+        this.pagoMapper=pagoMapper;
     }
 
-    public  Pago CrearPago(Pago pago) {
-        return pagoRepository.save(pago);
+    public  PagoDto CrearPago(PagoDto pagoDto) {
+        Pago pago = pagoMapper.pagoDtoToPago(pagoDto);
+        pago = pagoRepository.save(pago);
+        return pagoMapper.pagoToPagoDto(pago);
+
+    }
+    public List<PagoDto> ObtenerTodoLosPagos(){
+        return pagoRepository.findAll().stream().map(pagoMapper::pagoToPagoDto).collect(Collectors.toList());
     }
 
     public List<Pago> obtenerTodoLosPagos() {
@@ -41,7 +49,7 @@ public class PagoService {
         Optional<Pago> pagoOptional = pagoRepository.findById(id);
         return pagoOptional.orElse(null);
     }
-    public Pago actualizarPago(Pago pago) {
+    public Pago actualizarPago(Long id, Pago pago) {
 
         if (pagoRepository.existsById(pago.getId())) {
             return pagoRepository.save(pago);
@@ -59,9 +67,5 @@ public class PagoService {
         }
     }
 
-    public PagoDto CrearPago(PagoDto pagoDto){
-        Pago pago = PagoMapper.INSTACE.pagoDtoToPag(pagoDto);
-        pago= pagoRepository.save(pago);
-        return PagoMapper.INSTACE.pagoToPagoDto(pago);
-    }
+
 }
