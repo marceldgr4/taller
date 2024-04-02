@@ -32,8 +32,10 @@ public class Pedido {
     @Enumerated(EnumType.STRING)
     private EstadoPedido status;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido",cascade = CascadeType.ALL)
     private List<ItemPedido> itemPedidos;
 
 
+    public void setCliente(String clienteDePrueba) {
+    }
 }

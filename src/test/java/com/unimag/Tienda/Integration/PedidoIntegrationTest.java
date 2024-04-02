@@ -13,8 +13,10 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
+
 
 @DataJpaTest
 @Testcontainers
@@ -29,7 +31,7 @@ public class PedidoIntegrationTest {
             .withUsername("postgres")
             .withPassword("1234");
     @Test
-    public void testGuardarPedido(){
+    public void testCrearPedido(){
         Cliente cliente =new Cliente();
         cliente.setNombre("Nombre del Cliente");
         cliente.setEmail("cliente@example.com");
@@ -37,7 +39,7 @@ public class PedidoIntegrationTest {
         clienteRepository.save(cliente);
 
         Pedido pedido =new Pedido();
-        pedido.setCliente(cliente);
+        pedido.setCliente(String.valueOf(cliente));
         pedido.setFechaPedido(LocalDateTime.now());
         pedido.setStatus(EstadoPedido.valueOf("PENDIENTE"));
 
@@ -47,6 +49,10 @@ public class PedidoIntegrationTest {
         assertEquals(cliente.getId(),pedidoGuardado.getCliente().getId());
         assertEquals("PENDIENTE",pedidoGuardado.getStatus());
 
+    }
+    @Test
+    public void testObtenerPedidoID(Long idPedido){
+        Optional<Pedido> pedido = pedidoRepository.findById(idPedido);
     }
     @Test
     public void testActualizarPedido() {
@@ -59,7 +65,7 @@ public class PedidoIntegrationTest {
 
 
         Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
+        pedido.setCliente(String.valueOf(cliente));
         pedido.setFechaPedido(LocalDateTime.now());
         pedido.setStatus(EstadoPedido.PENDIENTE);
         pedidoRepository.save(pedido);
@@ -81,7 +87,7 @@ public class PedidoIntegrationTest {
 
 
         Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
+        pedido.setCliente(String.valueOf(cliente));
         pedido.setFechaPedido(LocalDateTime.now());
         pedido.setStatus(EstadoPedido.PENDIENTE);
         pedidoRepository.save(pedido);
@@ -105,7 +111,7 @@ public class PedidoIntegrationTest {
 
 
         Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
+        pedido.setCliente(String.valueOf(cliente));
         pedido.setFechaPedido(LocalDateTime.now());
         pedido.setStatus(EstadoPedido.PENDIENTE);
         pedidoRepository.save(pedido);
