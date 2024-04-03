@@ -17,6 +17,8 @@ import java.util.List;
 public class Cliente {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @Column(name ="idCliente",nullable = false)
+
     private Long id;
     private  String Nombre;
     private  String Email;

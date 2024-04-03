@@ -7,6 +7,7 @@ import com.unimag.Tienda.Entidad.Producto;
 import com.unimag.Tienda.Repository.ItemPedidoRepository;
 import com.unimag.Tienda.Repository.PedidoRepository;
 import com.unimag.Tienda.Repository.ProductoRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,12 +17,10 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.Assert.*;
 
 @DataJpaTest
 @Testcontainers
@@ -33,10 +32,8 @@ public class ItemPedidoIntegrationTest {
     @Autowired
     private ProductoRepository productoRepository;
     @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("tiendamicro")
-            .withUsername("postgres")
-            .withPassword("1234");
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
+
 @DynamicPropertySource
 static void setPostgreSQLContainer(DynamicPropertyRegistry registry){
     registry.add("spring.datasoirce.url", postgreSQLContainer::getJdbcUrl);
@@ -68,11 +65,11 @@ static void setPostgreSQLContainer(DynamicPropertyRegistry registry){
         ItemPedido itemPedidoGuardado = itemPedidoRepository.save(itemPedido);
 
 
-        assertNotNull(itemPedidoGuardado.getId());
-        assertEquals(pedido.getId(), itemPedidoGuardado.getPedido().getId());
-        assertEquals(product.getId(), itemPedidoGuardado.getProducto().getId());
-        assertEquals(Optional.of(5), itemPedidoGuardado.getCantidad());
-        assertEquals(Optional.of(10.0), itemPedidoGuardado.getPrecioUnitario());
+        Assertions.assertNotNull(itemPedidoGuardado.getId());
+        Assertions.assertEquals(pedido.getId(), itemPedidoGuardado.getPedido().getId());
+        Assertions.assertEquals(product.getId(), itemPedidoGuardado.getProducto().getId());
+        Assertions.assertEquals((5), itemPedidoGuardado.getCantidad());
+        Assertions.assertEquals((10.0), itemPedidoGuardado.getPrecioUnitario());
     }
     @Test
     public void testEliminarItemPedido() {
@@ -95,11 +92,11 @@ static void setPostgreSQLContainer(DynamicPropertyRegistry registry){
         itemPedido.setPrecioUnitario(10.0);
         itemPedidoRepository.save(itemPedido);
         itemPedidoRepository.deleteById(itemPedido.getId());
-        assertTrue(itemPedidoRepository.findById(itemPedido.getId()).isEmpty());
+        Assertions.assertTrue(itemPedidoRepository.findById(itemPedido.getId()).isEmpty());
 
     }
     @Test
-    public void testAcutlizarItemPedido(){
+    public void testActulizarItemPedido(){
     Pedido pedido =new Pedido();
     pedido.setFechaPedido(LocalDateTime.now());
     pedido.setStatus(EstadoPedido.PENDIENTE);
@@ -122,9 +119,9 @@ static void setPostgreSQLContainer(DynamicPropertyRegistry registry){
      itemPedidoRepository.save(itemPedido);
 
      ItemPedido UpdateItemPedido =itemPedidoRepository.findById(itemPedido.getId()).orElse(null);
-     assertNotNull(UpdateItemPedido);
-     assertEquals(Optional.of(10), UpdateItemPedido.getCantidad());
-     assertEquals(Optional.of(20.0), UpdateItemPedido.getPrecioUnitario());
+     Assertions.assertNotNull(UpdateItemPedido);
+     Assertions.assertEquals((10), UpdateItemPedido.getCantidad());
+     Assertions.assertEquals((20.0), UpdateItemPedido.getPrecioUnitario());
 
     }
     @Test

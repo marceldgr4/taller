@@ -12,6 +12,7 @@ import lombok.*;
 
 public class DetalleEnvio {
     @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

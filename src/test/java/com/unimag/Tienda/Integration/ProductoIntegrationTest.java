@@ -4,6 +4,7 @@ import com.unimag.Tienda.Entidad.Producto;
 
 import com.unimag.Tienda.Repository.ProductoRepository;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,7 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+
 
 @DataJpaTest
 @Testcontainers
@@ -23,10 +24,7 @@ public class ProductoIntegrationTest {
 @Autowired
     private ProductoRepository productoRepository;
 @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer =new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("tiendamicro")
-            .withUsername("postgres")
-            .withPassword("1234");
+    public static PostgreSQLContainer<?> postgreSQLContainer =new PostgreSQLContainer<>("postgres:latest");
 @Test
     public void tesCrearProducto(){
     Producto producto = new Producto();
@@ -35,10 +33,10 @@ public class ProductoIntegrationTest {
     producto.setStock(100);
     Producto productoGuardado = productoRepository.save(producto);
 
-    assertNotNull(productoGuardado.getId());
-    assertEquals("Producto de prueba", productoGuardado.getNombreProducto());
-    assertEquals(Optional.of(10.0), productoGuardado.getPrecio());
-    assertEquals(Optional.of(100), productoGuardado.getStock());
+    Assertions.assertNotNull(productoGuardado.getId());
+    Assertions.assertEquals("Producto de prueba", productoGuardado.getNombreProducto());
+    Assertions.assertEquals((10.0), productoGuardado.getPrecio());
+    Assertions.assertEquals((100), productoGuardado.getStock());
 }
 @Test
 public void testLeerProductoPorID(){
@@ -49,8 +47,8 @@ public void testLeerProductoPorID(){
     Producto productoGuardado = productoRepository.save(producto);
     Optional<Producto>productoLeido =productoRepository.findById(productoGuardado.getId());
 
-    assertTrue(productoLeido.isPresent());
-    assertEquals(productoGuardado, productoLeido.get());
+    Assertions.assertTrue(productoLeido.isPresent());
+    Assertions.assertEquals(productoGuardado, productoLeido.get());
 }
     @Test
     public void testActualizarProducto() {
@@ -65,9 +63,9 @@ public void testLeerProductoPorID(){
         productoRepository.save(productoGuardado);
 
         Producto productoActualizado = productoRepository.findById(productoGuardado.getId()).orElse(null);
-        assertNotNull(productoActualizado);
-        assertEquals(Optional.of(15.0), productoActualizado.getPrecio());
-        assertEquals(Optional.of(150), productoActualizado.getStock());
+        Assertions.assertNotNull(productoActualizado);
+        Assertions.assertEquals((15.0), productoActualizado.getPrecio());
+        Assertions.assertEquals((150), productoActualizado.getStock());
     }
 
     @Test
@@ -81,7 +79,7 @@ public void testLeerProductoPorID(){
         productoRepository.delete(productoGuardado);
 
         Producto productoEliminado = productoRepository.findById(productoGuardado.getId()).orElse(null);
-        assertNull(productoEliminado);
+        Assertions.assertNull(productoEliminado);
     }
 
     @Test
@@ -93,7 +91,7 @@ public void testLeerProductoPorID(){
         productoRepository.save(producto);
 
         List<Producto> productosEncontrados = productoRepository.findByNombreContainingIgnoreCase("producto");
-        assertEquals(1, productosEncontrados.size());
-        assertEquals("producto de prueba", productosEncontrados.get(0).getNombreProducto());
+        Assertions.assertEquals(1, productosEncontrados.size());
+        Assertions.assertEquals("producto de prueba", productosEncontrados.get(0).getNombreProducto());
     }
 }

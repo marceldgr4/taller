@@ -3,7 +3,8 @@ package com.unimag.Tienda.Service;
 import com.unimag.Tienda.Dto.PedidoDto;
 import com.unimag.Tienda.Entidad.Cliente;
 import com.unimag.Tienda.Entidad.Pedido;
-import com.unimag.Tienda.Mapper.PedidoMapeer;
+
+import com.unimag.Tienda.Mapper.PedidoMapper;
 import com.unimag.Tienda.Repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,37 +68,37 @@ public class PedidoService {
     }
     //------DTO----
 
-    private PedidoMapeer pedidoMapeer;
+    private PedidoMapper pedidoMapper;
     public PedidoDto CrearPedido(PedidoDto pedidoDto){
-        Pedido pedido = pedidoMapeer.pedidoDtoToPedido(pedidoDto);
-        return pedidoMapeer.pedidoToPedidoDto(pedido);
+        Pedido pedido = pedidoMapper.pedidoDtoToPedido(pedidoDto);
+        return pedidoMapper.pedidoToPedidoDto(pedido);
     }
     public PedidoDto ObtenerPedidoPorId(Long id) {
         Pedido pedido = pedidoRepository.findById(id).orElse(null);
-        return pedido != null ? pedidoMapeer.pedidoToPedidoDto(pedido) : null;
+        return pedido != null ? pedidoMapper.pedidoToPedidoDto(pedido) : null;
     }
     public List<PedidoDto> buscarPedidosPorCliente(Long cliente) {
         List<Pedido> pedidos = pedidoRepository.findByClienteIdWithItemPedido(cliente);
         return pedidos.stream()
-                .map(pedidoMapeer::pedidoToPedidoDto)
+                .map(pedidoMapper::pedidoToPedidoDto)
                 .collect(Collectors.toList());
     }
 
     public List<PedidoDto> buscarPedidosPorEstado(Cliente cliente, String estado) {
         List<Pedido> pedidos = pedidoRepository.findByClienteAndStatus(cliente,estado);
         return pedidos.stream()
-                .map(pedidoMapeer::pedidoToPedidoDto)
+                .map(pedidoMapper::pedidoToPedidoDto)
                 .collect(Collectors.toList());
     }
 
     public PedidoDto ActualizarPedido(Long id, PedidoDto pedidoDto) {
-        Pedido pedido = pedidoMapeer.pedidoDtoToPedido(pedidoDto);
+        Pedido pedido = pedidoMapper.pedidoDtoToPedido(pedidoDto);
         pedido = pedidoRepository.save(pedido);
-        return pedidoMapeer.pedidoToPedidoDto(pedido);
+        return pedidoMapper.pedidoToPedidoDto(pedido);
     }
 
     public List<PedidoDto> ObtenerTodoLosPedidos() {
         List<Pedido>pedidos=pedidoRepository.findAll();
-        return pedidos.stream().map(pedidoMapeer::pedidoToPedidoDto).collect(Collectors.toList());
+        return pedidos.stream().map(pedidoMapper::pedidoToPedidoDto).collect(Collectors.toList());
     }
 }

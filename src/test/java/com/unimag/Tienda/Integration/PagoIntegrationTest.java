@@ -6,6 +6,7 @@ import com.unimag.Tienda.Entidad.Pago;
 import com.unimag.Tienda.Entidad.Pedido;
 import com.unimag.Tienda.Repository.PagoRepository;
 import com.unimag.Tienda.Repository.PedidoRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,10 +16,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @DataJpaTest
 @Testcontainers
@@ -28,10 +25,7 @@ public class PagoIntegrationTest {
     @Autowired
     private PedidoRepository pedidoRepository;
     @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("tiendamicro")
-            .withUsername("postgres")
-            .withPassword("1234");
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
 
     @Test
     public void testGuardarPago(){
@@ -49,13 +43,13 @@ public class PagoIntegrationTest {
         Pago pagoGuardado = pagoRepository.save(pago);
         List<Pago> pagoList =pagoRepository.findAll();
 
-        assertNotNull(pagoGuardado.getId());
-        assertEquals(pedido.getId(),pagoGuardado.getPedido().getId());
-        assertEquals(Optional.of(50.0),pagoGuardado.getTotalPago());
-        assertEquals(MetodoPago.PSE,pagoGuardado.getMetodoPago());
+        Assertions.assertNotNull(pagoGuardado.getId());
+        Assertions.assertEquals(pedido.getId(), pagoGuardado.getPedido().getId());
+        Assertions.assertEquals((50.0), pagoGuardado.getTotalPago());
+        Assertions.assertEquals(MetodoPago.PSE, pagoGuardado.getMetodoPago());
     }
     @Test
-    public void testActlizarPago(){
+    public void testActulizarPago(){
         Pago pago =new Pago();
         pago.setTotalPago(50.0);
         pago.setFechaPago(LocalDateTime.now());
@@ -66,7 +60,8 @@ public class PagoIntegrationTest {
         pagoRepository.save(pago);
 
         Pago pagoActulizado= pagoRepository.findById(pago.getId()).orElse(null);
-        assertEquals(Optional.of(60.0),pagoActulizado.getTotalPago());
+        assert pagoActulizado != null;
+        Assertions.assertEquals((60.0), pagoActulizado.getTotalPago());
     }
     @Test
     public void testEliminarPago(){
@@ -77,13 +72,13 @@ public class PagoIntegrationTest {
         pago =pagoRepository.save(pago);
 
         pagoRepository.delete(pago);
-        assertTrue(pagoRepository.findById(pago.getId()).isEmpty());
+        Assertions.assertTrue(pagoRepository.findById(pago.getId()).isEmpty());
     }
     @Test
     public void testBuscarPago(){
 
         List<Pago> pagosEncontrado =pagoRepository.findAll();
-        assertTrue(pagosEncontrado.isEmpty());
+        Assertions.assertTrue(pagosEncontrado.isEmpty());
 
     }
 }
