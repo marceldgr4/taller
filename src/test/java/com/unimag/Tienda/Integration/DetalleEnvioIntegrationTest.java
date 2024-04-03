@@ -6,6 +6,7 @@ import com.unimag.Tienda.Entidad.Enum.EstadoPedido;
 import com.unimag.Tienda.Entidad.Pedido;
 import com.unimag.Tienda.Repository.DetalleEnvioRepository;
 import com.unimag.Tienda.Repository.PedidoRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 
-import static org.junit.Assert.*;
+
 
 @DataJpaTest
 @Testcontainers
@@ -27,10 +28,8 @@ public class DetalleEnvioIntegrationTest {
 @Autowired
     private PedidoRepository pedidoRepository;
 @Container
-public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-        .withDatabaseName("tiendamicro")
-        .withUsername("postgres")
-        .withPassword("1234");
+public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
+
 @Test
     public void testGuardarDetalleEnvio(){
     Pedido pedido = new Pedido();
@@ -45,11 +44,11 @@ public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContain
     detalleEnvio.setNumeroGuia("123456789");
 
     DetalleEnvio detalleEnvioGuardado = detalleEnvioRepository.save(detalleEnvio);
-    assertNotNull(detalleEnvioGuardado.getId());
-    assertEquals(pedido.getId(),detalleEnvioGuardado.getPedido().getId());
-    assertEquals("Dirección de Envío", detalleEnvioGuardado.getDireccion());
-    assertEquals("Servicio de Envío Express", detalleEnvioGuardado.getTransportadora());
-    assertEquals("123456789", detalleEnvioGuardado.getNumeroGuia());
+    Assertions.assertNotNull(detalleEnvioGuardado.getId());
+    Assertions.assertEquals(pedido.getId(), detalleEnvioGuardado.getPedido().getId());
+    Assertions.assertEquals("Dirección de Envío", detalleEnvioGuardado.getDireccion());
+    Assertions.assertEquals("Servicio de Envío Express", detalleEnvioGuardado.getTransportadora());
+    Assertions.assertEquals("123456789", detalleEnvioGuardado.getNumeroGuia());
     }
     @Test
     public void testBuscarDetalleEnvioPorId(){
@@ -65,8 +64,8 @@ public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContain
     detalleEnvio.setNumeroGuia("123412");
     detalleEnvioRepository.save(detalleEnvio);
     Optional<DetalleEnvio>detalleEnvioEncotrado = detalleEnvioRepository.findByidPedido(pedido.getId());
-    assertTrue(detalleEnvioEncotrado.isPresent());
-    assertEquals(detalleEnvio.getId(),detalleEnvioEncotrado.get().getId());
+    Assertions.assertTrue(detalleEnvioEncotrado.isPresent());
+    Assertions.assertEquals(detalleEnvio.getId(), detalleEnvioEncotrado.get().getId());
 
     }
     @Test
@@ -83,9 +82,10 @@ public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContain
     detalleEnvio.setNumeroGuia("numero de guia");
     DetalleEnvio detalleEnvioGuardado= detalleEnvioRepository.save(detalleEnvio);
     detalleEnvioRepository.delete(detalleEnvioGuardado);
-    assertFalse(detalleEnvioRepository.existsById(detalleEnvioGuardado.getId()));
+    Assertions.assertFalse(detalleEnvioRepository.existsById(detalleEnvioGuardado.getId()));
 
     }
+    @Test
     public void testActualizarDetalleEnvio() {
         Pedido pedido = new Pedido();
         pedido.setFechaPedido(LocalDateTime.now());

@@ -3,16 +3,16 @@ package com.unimag.Tienda.Unit.RepositoryTest;
 import com.unimag.Tienda.Entidad.Enum.MetodoPago;
 import com.unimag.Tienda.Entidad.Pago;
 import com.unimag.Tienda.Repository.PagoRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
 
 @DataJpaTest
 
@@ -27,7 +27,7 @@ public class PagoRepositoryTest {
         pago.setMetodoPago(MetodoPago.PSE);
         Pago pagoGuardado =pagoRepository.save(pago);
         Optional<Pago> pagoRecuperado =pagoRepository.findById(pagoGuardado.getId());
-        assertEquals(pagoGuardado,pagoRecuperado);
+        Assertions.assertEquals(pagoGuardado, pagoRecuperado);
     }
     @Test
     public void testRecuperarPagosPorMetodoPago() {

@@ -25,7 +25,7 @@ public class PedidoServiceTest {
 
     @Test
     public void testCrearPedido() {
-        // Configurar el pedido de prueba
+
         PedidoDto pedidoDto = new PedidoDto();
         pedidoDto.setIdCliente(pedidoDto.getIdCliente());
         pedidoDto.setStatus("PENDIENTE");

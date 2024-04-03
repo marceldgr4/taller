@@ -7,8 +7,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface PedidoMapeer {
-    PedidoMapeer INSTANCE = Mappers.getMapper(PedidoMapeer.class);
+public interface PedidoMapper {
+    PedidoMapper INSTANCE = Mappers.getMapper(PedidoMapper.class);
     @Mapping(target = "id",ignore = true)
     Pedido pedidoDtoToPedido(PedidoDto pedido);
     PedidoDto pedidoToPedidoDto(Pedido pedido);

@@ -2,6 +2,7 @@ package com.unimag.Tienda.Integration;
 
 import com.unimag.Tienda.Entidad.Cliente;
 import com.unimag.Tienda.Repository.ClienteRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -19,10 +20,8 @@ public class ClienteIntegrationTest {
     @Autowired
     private ClienteRepository clienteRepository;
     @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("tiendamicro")
-            .withUsername("postgres")
-            .withPassword("1234");
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:latest");
+
 
     @Test
     public void testGuardarCliente() {
@@ -32,10 +31,10 @@ public class ClienteIntegrationTest {
         cliente.setDireccion("direccion de cliente");
 
         Cliente clienteGuardado = clienteRepository.save(cliente);
-        assertNotNull(clienteGuardado.getId());
-        assertEquals("Nombre del Cliente", clienteGuardado.getNombre());
-        assertEquals("cliente@example.com", clienteGuardado.getEmail());
-        assertEquals("Dirección del Cliente", clienteGuardado.getDireccion());
+        Assertions.assertNotNull(clienteGuardado.getId());
+        Assertions.assertEquals("Nombre del Cliente", clienteGuardado.getNombre());
+        Assertions.assertEquals("cliente@example.com", clienteGuardado.getEmail());
+        Assertions.assertEquals("Dirección del Cliente", clienteGuardado.getDireccion());
     }
     @Test
     public void TestActualizarCliente(){
@@ -49,8 +48,8 @@ public class ClienteIntegrationTest {
         clienteRepository.save(clienteGuardado);
 
         Optional<Cliente> clienteActulizado = clienteRepository.findById(clienteGuardado.getId());
-        assertTrue(clienteActulizado.isPresent());
-        assertEquals("nuevo nombre",clienteActulizado.get().getNombre());
+        Assertions.assertTrue(clienteActulizado.isPresent());
+        Assertions.assertEquals("nuevo nombre", clienteActulizado.get().getNombre());
 
     }
     @Test
@@ -63,7 +62,7 @@ public class ClienteIntegrationTest {
 
         clienteRepository.delete(clienteGuardado);
         Optional<Cliente>clienteEliminado = clienteRepository.findById(clienteGuardado.getId());
-        assertFalse(clienteEliminado.isPresent());
+        Assertions.assertFalse(clienteEliminado.isPresent());
 
     }
     @Test
@@ -72,10 +71,10 @@ public class ClienteIntegrationTest {
         cliente.setNombre("nombre del cliente");
         cliente.setEmail("cliente@example.com");
         cliente.setDireccion("direccion del cliente");
-        Cliente clienteGudardado= clienteRepository.save(cliente);
-        Optional<Cliente>clienteEncontrado =clienteRepository.findById(clienteGudardado.getId());
-        assertTrue(clienteEncontrado.isPresent());
-        assertEquals(clienteGudardado.getId(),clienteEncontrado.get().getId());
+        Cliente clienteGuardado= clienteRepository.save(cliente);
+        Optional<Cliente>clienteEncontrado =clienteRepository.findById(clienteGuardado.getId());
+        Assertions.assertTrue(clienteEncontrado.isPresent());
+        Assertions.assertEquals(clienteGuardado.getId(), clienteEncontrado.get().getId());
     }
 
 

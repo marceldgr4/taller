@@ -5,6 +5,7 @@ import com.unimag.Tienda.Entidad.Enum.EstadoPedido;
 import com.unimag.Tienda.Entidad.Pedido;
 import com.unimag.Tienda.Repository.ClienteRepository;
 import com.unimag.Tienda.Repository.PedidoRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+
 
 
 @DataJpaTest
@@ -26,10 +27,7 @@ public class PedidoIntegrationTest {
     @Autowired
     private ClienteRepository clienteRepository;
     @Container
-    public static PostgreSQLContainer<?>postgreSQLContainer =new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("tiendamicro")
-            .withUsername("postgres")
-            .withPassword("1234");
+    public static PostgreSQLContainer<?>postgreSQLContainer =new PostgreSQLContainer<>("postgres:latest");
     @Test
     public void testCrearPedido(){
         Cliente cliente =new Cliente();
@@ -45,9 +43,9 @@ public class PedidoIntegrationTest {
 
         Pedido pedidoGuardado = pedidoRepository.save(pedido);
 
-        assertNotNull(pedidoGuardado.getId());
-        assertEquals(cliente.getId(),pedidoGuardado.getCliente().getId());
-        assertEquals("PENDIENTE",pedidoGuardado.getStatus());
+        Assertions.assertNotNull(pedidoGuardado.getId());
+        Assertions.assertEquals(cliente.getId(), pedidoGuardado.getCliente().getId());
+        Assertions.assertEquals(EstadoPedido.PENDIENTE, pedidoGuardado.getStatus());
 
     }
     @Test
@@ -74,7 +72,7 @@ public class PedidoIntegrationTest {
         pedido.setStatus(EstadoPedido.ENVIADO);
         Pedido pedidoActualizado = pedidoRepository.save(pedido);
 
-        assertEquals(EstadoPedido.ENVIADO, pedidoActualizado.getStatus());
+        Assertions.assertEquals(EstadoPedido.ENVIADO, pedidoActualizado.getStatus());
     }
     @Test
     public void testEliminarPedido() {
@@ -96,7 +94,7 @@ public class PedidoIntegrationTest {
         pedidoRepository.delete(pedido);
 
 
-        assertNull(pedidoRepository.findById(pedido.getId()).orElse(null));
+        Assertions.assertNull(pedidoRepository.findById(pedido.getId()).orElse(null));
 
     }
 
@@ -121,6 +119,6 @@ public class PedidoIntegrationTest {
         Pedido pedidoActualizado = pedidoRepository.save(pedido);
 
 
-        assertEquals(EstadoPedido.ENVIADO, pedidoActualizado.getStatus());
+        Assertions.assertEquals(EstadoPedido.ENVIADO, pedidoActualizado.getStatus());
     }
 }
