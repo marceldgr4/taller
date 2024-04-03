@@ -51,23 +51,5 @@ public class ClienteService {
         return clienteRepository.findByNombreStartingWithIgnoreCase(Nombre);
     }
 //-----------_DTO-------------------
-    public ClienteDto CrearCliente(ClienteDto clienteDto){
-        Cliente cliente = ClienteMapper.INSTANCE.INSTANCE.clienteDtoToCliente(clienteDto);
-        Cliente clienteGuardado = clienteRepository.save(cliente);
-        return ClienteMapper.INSTANCE.clienteToClienteDto(clienteGuardado);
-    }
 
-    public List<ClienteDto> ObtenerClientePorCiudad(String cityName) {
-        List<Cliente> clientes =clienteRepository.findByCiudad(cityName);
-        return clientes.stream().map(this::convertirAClienteDto).collect(Collectors.toList());
-    }
-
-    private ClienteDto convertirAClienteDto(Cliente cliente) {
-        ClienteDto clienteDto = new ClienteDto();
-        clienteDto.setId(cliente.getId());
-        clienteDto.setNombre(cliente.getNombre());
-        clienteDto.setEmail(cliente.getEmail());
-        clienteDto.setDireccion(cliente.getDireccion());
-        return clienteDto;
-    }
 }

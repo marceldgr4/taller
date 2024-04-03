@@ -10,16 +10,12 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PagoMapper {
-    PagoMapper INSTANCE = Mappers.getMapper(PagoMapper.class);
 
-    @Mapping(source = "fechaPago", target = "fechaPago")
-    @Mapping(source = "pedido.id",target = "pedido.id")
     PagoDto pagoToPagoDto(Pago pago);
 
-    @Mapping(source = "fechaPago",target = "fechaPago")
-    @Mapping(source = "idPedido",target = "idPedido")
+
     Pago pagoDtoToPago(PagoDto pagoDto);
 
 
