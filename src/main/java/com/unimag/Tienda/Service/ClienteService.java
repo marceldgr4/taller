@@ -1,15 +1,12 @@
 package com.unimag.Tienda.Service;
 
-import com.unimag.Tienda.Dto.ClienteDto;
 import com.unimag.Tienda.Entidad.Cliente;
-import com.unimag.Tienda.Mapper.ClienteMapper;
 import com.unimag.Tienda.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -49,6 +46,10 @@ public class ClienteService {
 //Encontrar clientes por todos los clientes que comiencen por un nombre
     public List<Cliente> BuscarPorNombreQueEmpieceCon(String Nombre) {
         return clienteRepository.findByNombreStartingWithIgnoreCase(Nombre);
+    }
+
+    public List<Cliente> ObternerClientePorCity(String cityName) {
+        return clienteRepository.findByCiudad(cityName);
     }
 //-----------_DTO-------------------
 
