@@ -13,7 +13,7 @@ import java.util.List;
 public interface ClienteMapper {
 
     ClienteDto clienteToClienteDto(Cliente cliente);
-    Cliente clienteDtoToCliente(ClienteDto clienteDto);
+   Cliente clienteDtoToCliente(clienteDto clienteDto);
    // List<ClienteDto> clientesToClientesDto(List<Cliente>clientes);
 
     List<ClienteDto> clientesToClientesDto(List<ClienteDto> clienteDtos);

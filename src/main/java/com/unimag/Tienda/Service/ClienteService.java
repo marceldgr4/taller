@@ -1,6 +1,8 @@
 package com.unimag.Tienda.Service;
 
+import com.unimag.Tienda.Dto.ClienteDto;
 import com.unimag.Tienda.Entidad.Cliente;
+import com.unimag.Tienda.Mapper.ClienteMapper;
 import com.unimag.Tienda.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,5 +54,12 @@ public class ClienteService {
         return clienteRepository.findByCiudad(cityName);
     }
 //-----------_DTO-------------------
-
+public ClienteDto CrearCliente(ClienteDto clienteDto){
+        Cliente cliente = clienteMapper.clienteDtoToCliente(clienteDto);
+       cliente clienteGuardado =clienteRepository.save(cliente);
+       return clienteMapper.clienteToClienteDto(clienteGuardado);
+}
+    public ClienteDto convertirClienteAClienteDto(Cliente cliente) {
+        return clienteMapper.clienteToClienteDto(cliente);
+    }
 }

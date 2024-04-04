@@ -38,4 +38,10 @@ public class ClienteController {
         return ResponseEntity.ok(clienteDtos);
 
     }
+    @PostMapping
+    public ResponseEntity<ClienteDto>CrearCliente(@RequestBody ClienteDto clienteDto){
+        ClienteDto NewClienteDto =clienteService.CrearCliente(clienteDto);
+        return new ResponseEntity<>(NewClienteDto,HttpStatus.CREATED);
+
+    }
 }
