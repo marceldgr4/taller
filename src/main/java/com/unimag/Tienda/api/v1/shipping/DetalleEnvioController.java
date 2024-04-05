@@ -1,4 +1,4 @@
-package com.unimag.Tienda.Controller;
+package com.unimag.Tienda.api.v1.shipping;
 
 import com.unimag.Tienda.Entidad.DetalleEnvio;
 import com.unimag.Tienda.Service.DetalleEnvioService;

@@ -1,4 +1,4 @@
-package com.unimag.Tienda.Controller;
+package com.unimag.Tienda.api.v1.payments;
 
 import com.unimag.Tienda.Dto.PagoDto;
 import com.unimag.Tienda.Entidad.Enum.MetodoPago;

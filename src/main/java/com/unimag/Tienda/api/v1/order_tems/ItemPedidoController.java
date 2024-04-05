@@ -1,4 +1,4 @@
-package com.unimag.Tienda.Controller;
+package com.unimag.Tienda.api.v1.order_tems;
 
 import com.unimag.Tienda.Dto.ItemPedidoDto;
 import com.unimag.Tienda.Entidad.ItemPedido;

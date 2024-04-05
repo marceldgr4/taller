@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +27,6 @@ public class ClienteServiceTest {
         List<Cliente> clientes = Arrays.asList(cliente1,cliente2);
 
         when(clienteRepository.findByEmail(email)).thenReturn(clientes);
-        List<Cliente>ClientesEncotrados = clienteRepository.findByEmail(email);
+        List<Cliente>ClientesEncontrados = clienteRepository.findByEmail(email);
     }
 }

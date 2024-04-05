@@ -1,6 +1,5 @@
 package com.unimag.Tienda.Integration;
 
-import com.unimag.Tienda.Entidad.Cliente;
 import com.unimag.Tienda.Entidad.DetalleEnvio;
 import com.unimag.Tienda.Entidad.Enum.EstadoPedido;
 import com.unimag.Tienda.Entidad.Pedido;

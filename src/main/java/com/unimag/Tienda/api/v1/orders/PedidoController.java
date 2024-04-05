@@ -1,4 +1,4 @@
-package com.unimag.Tienda.Controller;
+package com.unimag.Tienda.api.v1.orders;
 
 import com.unimag.Tienda.Entidad.Pedido;
 import com.unimag.Tienda.Service.PedidoService;

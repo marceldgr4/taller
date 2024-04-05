@@ -1,37 +1,42 @@
 package com.unimag.Tienda.Unit.RepositoryTest;
 
-import com.unimag.Tienda.Dto.ClienteDto;
+
+import com.unimag.Tienda.AbstractIntegrationBDTest;
 import com.unimag.Tienda.Entidad.Cliente;
 import com.unimag.Tienda.Repository.ClienteRepository;
-import com.unimag.Tienda.Service.ClienteService;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
-public class ClienteRepositoryTest {
-    @Mock
-    private ClienteRepository clienteRepository;
+@DataJpaTest
+class ClienteRepositoryTest extends AbstractIntegrationBDTest {
+    @Autowired
+    ClienteRepository clienteRepository;
 
-    @InjectMocks
-    private ClienteService clienteService;
 
-    @Test
-    public  void testBuscarPorEmail(){
-        String email="cliente@example.com";
-        Cliente cliente1 = new Cliente();
-        Cliente cliente2 =new Cliente();
-        List<Cliente>clientes = Arrays.asList(cliente1,cliente2);
-        when(clienteRepository.findByEmail(email)).thenReturn(clientes);
-       // List<ClienteDto> ClienteEncotrados = clienteService.BuscarPorEmail(email);
+   @BeforeEach
+   void setUp() {
+        clienteRepository.deleteAll();
+   }
+   @Test
+   void testGuardarCliente() {
+       Cliente cliente = Cliente.builder()
+               .Nombre("nombre")
+               .Email("example@email.com")
+               .Direccion("123-345")
+               .build();
+       Cliente clienteSalvo = clienteRepository.save(cliente);
+       Cliente clienteEncontrado = clienteRepository.findById(cliente.getId()).orElse(null);
+       assertThat(clienteEncontrado).isNotNull();
+       assertThat(clienteEncontrado.getNombre()).isEqualTo(cliente.getNombre());
+       assertThat(clienteEncontrado.getEmail()).isEqualTo(cliente.getEmail());
+       assertThat(clienteEncontrado.getDireccion()).isEqualTo(cliente.getDireccion());
 
-    }
+   }
+
 }

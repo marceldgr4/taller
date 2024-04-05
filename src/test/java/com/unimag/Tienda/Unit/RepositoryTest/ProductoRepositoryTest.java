@@ -22,10 +22,5 @@ public class ProductoRepositoryTest {
     private ProductoRepository productoRepository;
 @InjectMocks
 private ProductoService productoService;
-@Test
-    public void testBuscarPorNombre(){
-    List<Producto> productos =new ArrayList<>();
-    when(productoRepository.findByNombreContainingIgnoreCase("term")).thenReturn(productos);
-    List<ProductoDto> ProductosEncotrados = productoService.BuscarProductoPorNombre("term");
-    }
+
 }

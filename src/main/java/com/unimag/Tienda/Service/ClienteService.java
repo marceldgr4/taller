@@ -1,42 +1,39 @@
 package com.unimag.Tienda.Service;
 
+import com.unimag.Tienda.Repository.ClienteRepository;
 import com.unimag.Tienda.Dto.ClienteDto;
 import com.unimag.Tienda.Entidad.Cliente;
 import com.unimag.Tienda.Mapper.ClienteMapper;
-import com.unimag.Tienda.Repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
-//-----------CRUD-------------
+    private ClienteMapper clienteMapper;
+
+    //-----------CRUD-------------
     public Cliente CrearCliente(Cliente cliente){
         return clienteRepository.save(cliente);
-    }
-
-    public Cliente ObtenerClientePorID(Long id){
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        if(cliente.isEmpty()){
-            return cliente.get();
-        }else {
-            throw new RuntimeException("cliente no encontrado con ID"+id);
-
-        }
     }
     public Cliente ActulizarCliente(Long id, Cliente cliente){
         cliente.setId(id);
         return clienteRepository.save(cliente);
-
     }
+
     public void EliminarCliente(Long id){
         clienteRepository.deleteById(id);
     }
-//-----------------------------------------
+
+
+//-------------------FIN DEL CRUD----------------
+
+//-----------------------------------------------
 //Encontrar clientes por email
     public List<Cliente> BuscarPorEmail(String email) {
         return clienteRepository.findByEmail(email);
@@ -46,20 +43,48 @@ public class ClienteService {
         return clienteRepository.findByDireccion(Direccion);
     }
 //Encontrar clientes por todos los clientes que comiencen por un nombre
-    public List<Cliente> BuscarPorNombreQueEmpieceCon(String Nombre) {
+    public List<Cliente> BuscarPorNombreQueEmpiecePor(String Nombre) {
         return clienteRepository.findByNombreStartingWithIgnoreCase(Nombre);
     }
 
-    public List<Cliente> ObternerClientePorCity(String cityName) {
+    public List<Cliente> ObtenerClientePorCity(String cityName) {
         return clienteRepository.findByCiudad(cityName);
     }
-//-----------_DTO-------------------
+    //----------------------------------------------------------
+    //---------------------------------DTO-----------------------
 public ClienteDto CrearCliente(ClienteDto clienteDto){
         Cliente cliente = clienteMapper.clienteDtoToCliente(clienteDto);
-       cliente clienteGuardado =clienteRepository.save(cliente);
+       Cliente clienteGuardado =clienteRepository.save(cliente);
        return clienteMapper.clienteToClienteDto(clienteGuardado);
 }
-    public ClienteDto convertirClienteAClienteDto(Cliente cliente) {
-        return clienteMapper.clienteToClienteDto(cliente);
+
+public ClienteDto ActualizarClienteDto(Long id,ClienteDto clienteDto){
+        Cliente cliente = clienteMapper.clienteDtoToCliente(clienteDto);
+        cliente.setId(id);
+        Cliente clienteActualizado =clienteRepository.save(cliente);
+        return clienteMapper.clienteToClienteDto(clienteActualizado);
+}
+
+    public ClienteDto ObtenerClientePorID(Long id){
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        if(clienteOptional.isPresent()){
+            Cliente cliente = clienteOptional.get();
+            return clienteMapper.clienteToClienteDto(cliente);
+        }else {
+            return null;
+        }
     }
+    public List<ClienteDto> ObtenerTodoLosClientes() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        return clientes.stream().map(clienteMapper::clienteToClienteDto).collect(Collectors.toList());
+    }
+    public ClienteDto GuardarCliente(ClienteDto clienteDto){
+        Cliente cliente = clienteMapper.clienteDtoToCliente(clienteDto);
+        Cliente clienteGuardado =clienteRepository.save(cliente);
+        return clienteMapper.clienteToClienteDto(clienteGuardado);
+
+    }
+
+
+
 }

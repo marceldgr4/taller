@@ -1,6 +1,6 @@
 package com.unimag.Tienda.Repository;
-import com.unimag.Tienda.Entidad.Cliente;
 
+import com.unimag.Tienda.Entidad.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
